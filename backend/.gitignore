@@ -18,6 +18,12 @@ lerna-debug.log*
 # OS
 .DS_Store
 
+# Agent and assistant configuration
+.agents/
+.claude/
+.cursor/
+.devin/
+
 # Tests
 /coverage
 /.nyc_output
