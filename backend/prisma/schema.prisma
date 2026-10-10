@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model User {
+  id          Int         @id @default(autoincrement())
+  name        String
+  email       String      @unique
+  password    String
+  createdAt   DateTime    @default(now()) @db.Timestamptz(3)
+  assigned    Task[]      @relation("AssignedTo")
+  created     Task[]      @relation("AssignedBy")
+  chatState   ChatState?
+}
+
+model Task {
+  id           Int        @id @default(autoincrement())
+  title        String     @db.VarChar(200)
+  description  String     @db.VarChar(2000)
+  dueAt        DateTime   @db.Timestamptz(3)
+  status       TaskStatus @default(PENDING)
+  assignedToId Int
+  assignedById Int
+  assignedTo   User       @relation("AssignedTo", fields: [assignedToId], references: [id], onDelete: Restrict)
+  assignedBy   User       @relation("AssignedBy", fields: [assignedById], references: [id], onDelete: Restrict)
+  createdAt    DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime   @updatedAt @db.Timestamptz(3)
+
+  @@index([assignedToId])
+  @@index([assignedById])
+}
+
+model ChatState {
+  userId    Int      @id
+  data      String
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
