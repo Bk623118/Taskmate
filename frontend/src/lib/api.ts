@@ -1,6 +1,8 @@
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "") ||
-  "http://localhost:4000";
+  process.env.NODE_ENV === "production"
+    ? "/api"
+    : process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "") ||
+      "http://localhost:4000";
 
 export class ApiError extends Error {
   readonly statusCode: number;

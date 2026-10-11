@@ -41,7 +41,13 @@ npm install
 npm run dev
 ```
 
-Set `NEXT_PUBLIC_API_URL` there if the API is not at its default address.
+Set `NEXT_PUBLIC_API_URL` there to the API origin if it is not at its default
+address. In production, the frontend proxies requests through its own `/api`
+route to this origin. This keeps the HttpOnly auth cookie same-site with the
+frontend, avoiding browsers that block cross-site cookies between hosts such as
+Vercel and Render. Redeploy the frontend after changing this environment
+variable. Keep the value as the backend origin (for example,
+`https://your-api.onrender.com`), without a trailing slash or route prefix.
 
 ## Tests
 
@@ -59,4 +65,3 @@ End-to-end permission tests use a test database only; apply the Prisma schema be
 | `alice@example.com` | `Test@1234` |
 | `rahul@example.com` | `Test@1234` |
 | `priya@example.com` | `Test@1234` |
-
