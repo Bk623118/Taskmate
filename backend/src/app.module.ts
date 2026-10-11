@@ -7,6 +7,7 @@ import { ChatModule } from './chat/chat.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { TasksModule } from './tasks/tasks.module.js';
 import { UsersModule } from './users/users.module.js';
+import { AppController } from './app.controller.js';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UsersModule } from './users/users.module.js';
     TasksModule,
     ChatModule,
   ],
+  controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}
